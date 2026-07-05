@@ -1,12 +1,7 @@
 {
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "index.html",
-        "styles.css",
-        "app.js",
-        "shop.db"
-      ]
+      "includeFiles": "{index.html,styles.css,app.js,shop.db}"
     }
   },
   "rewrites": [
