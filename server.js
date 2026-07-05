@@ -8,6 +8,7 @@ const fileUpload = require('express-fileupload');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const os = require('os');
 
 const envPath = path.join(__dirname, '.env');
 if (fs.existsSync(envPath)) {
@@ -30,13 +31,23 @@ if (fs.existsSync(envPath)) {
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_demo');
 const app = express();
 const port = process.env.PORT || 3000;
-const dbPath = path.join(__dirname, 'shop.db');
-const uploadDir = path.join(__dirname, 'uploads');
+const isServerlessRuntime = Boolean(
+  process.env.VERCEL ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  __dirname.startsWith('/var/task')
+);
+const bundledDbPath = path.join(__dirname, 'shop.db');
+const dbPath = isServerlessRuntime ? path.join(os.tmpdir(), 'shop.db') : bundledDbPath;
+const uploadDir = isServerlessRuntime ? path.join(os.tmpdir(), 'uploads') : path.join(__dirname, 'uploads');
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Ensure uploads directory exists
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+if (isServerlessRuntime && !fs.existsSync(dbPath) && fs.existsSync(bundledDbPath)) {
+  fs.copyFileSync(bundledDbPath, dbPath);
 }
 
 app.use(cors());
@@ -934,6 +945,10 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Shop backend running on http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Shop backend running on http://localhost:${port}`);
+  });
+}
+
+module.exports = app;

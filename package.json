@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Full-featured e-commerce platform with authentication, payments, and admin dashboard",
   "main": "server.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
