@@ -821,7 +821,7 @@ app.post('/api/orders', async (req, res) => {
       delivery,
       total,
       JSON.stringify(items),
-      (err) => {
+      async (err) => {
         if (err) {
           return res.status(500).json({ error: 'Failed to save order' });
         }
@@ -846,30 +846,38 @@ app.post('/api/orders', async (req, res) => {
           paymentMethod
         };
 
+        let emailSent = false;
+        let emailError = null;
+
         // Send confirmation email only when real mail credentials are configured.
         if (customer.email && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
           const email = buildOrderEmail(orderForEmail);
           const invoicePdf = buildInvoicePdf(orderForEmail);
 
-          emailTransporter.sendMail({
-            from: `"${APP_NAME}" <${process.env.EMAIL_USER}>`,
-            to: customer.email,
-            subject: `${APP_NAME} order confirmed - ${id}`,
-            text: email.text,
-            html: email.html,
-            attachments: [
-              {
-                filename: `${APP_NAME}-Invoice-${id}.pdf`,
-                content: invoicePdf,
-                contentType: 'application/pdf'
-              }
-            ]
-          })
-            .then(() => console.log(`Order confirmation email sent to ${customer.email}`))
-            .catch(err => console.log('Email send failed:', err));
+          try {
+            await emailTransporter.sendMail({
+              from: `"${APP_NAME}" <${process.env.EMAIL_USER}>`,
+              to: customer.email,
+              subject: `${APP_NAME} order confirmed - ${id}`,
+              text: email.text,
+              html: email.html,
+              attachments: [
+                {
+                  filename: `${APP_NAME}-Invoice-${id}.pdf`,
+                  content: invoicePdf,
+                  contentType: 'application/pdf'
+                }
+              ]
+            });
+            emailSent = true;
+            console.log(`Order confirmation email sent to ${customer.email}`);
+          } catch (err) {
+            emailError = err.message;
+            console.log('Email send failed:', err);
+          }
         }
 
-        res.status(201).json({ success: true, id, paymentId });
+        res.status(201).json({ success: true, id, paymentId, emailSent, emailError });
       }
     );
   } catch (error) {
