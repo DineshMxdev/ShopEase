@@ -52,9 +52,20 @@ if (isServerlessRuntime && !fs.existsSync(dbPath) && fs.existsSync(bundledDbPath
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
 app.use('/uploads', express.static(uploadDir));
 app.use(fileUpload());
+
+app.get('/styles.css', (req, res) => {
+  res.type('text/css');
+  res.sendFile(path.join(__dirname, 'styles.css'));
+});
+
+app.get('/app.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'app.js'));
+});
+
+app.use(express.static(__dirname));
 
 // Email configuration
 const emailTransporter = nodemailer.createTransport({
