@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase — Online Shopping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="light">
+    <header class="fk-header">
+        <div class="fk-header-top">
+            <a class="fk-logo" href="#shop" data-step-target="shop" aria-label="ShopEase home">
+                <span class="fk-logo-text">Shop<span class="fk-logo-accent">Ease</span></span>
+                <span class="fk-logo-tag">Smart <strong>Deals</strong></span>
+            </a>
+
+            <div class="fk-search-wrap">
+                <input type="search" id="product-search" class="fk-search" placeholder="Search for products, brands and more" aria-label="Search products">
+                <button class="fk-search-btn" type="button" aria-label="Search">&#128269;</button>
+            </div>
+
+            <nav class="fk-header-nav" aria-label="Account and cart">
+                <button class="fk-nav-btn" type="button" id="login-btn" data-step-target="signin">
+                    <span class="fk-nav-label">Hello,</span>
+                    <strong>Sign in</strong>
+                </button>
+                <button class="fk-nav-btn nav-item" type="button" data-step-target="history">
+                    <strong>Orders</strong>
+                </button>
+                <button class="fk-nav-btn nav-item" type="button" data-step-target="wishlist" title="Wishlist">
+                    <strong>Wishlist</strong>
+                </button>
+                <button class="fk-nav-btn nav-item fk-cart-btn" type="button" data-step-target="cart">
+                    <span class="fk-cart-icon">&#128722;</span>
+                    <strong>Cart</strong>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </button>
+                <button class="fk-nav-btn" type="button" id="theme-toggle" title="Toggle dark mode" style="font-size: 1.2em;">☀️</button>
+            </nav>
+        </div>
+
+        <nav class="fk-category-bar" aria-label="Shop categories">
+            <button type="button" data-category="all" class="category-pill active">
+                <span class="cat-icon">🏠</span> All
+            </button>
+            <button type="button" data-category="Tech" class="category-pill">
+                <span class="cat-icon">📱</span> Mobiles &amp; Electronics
+            </button>
+            <button type="button" data-category="Home" class="category-pill">
+                <span class="cat-icon">🛋️</span> Home &amp; Furniture
+            </button>
+            <button type="button" data-category="Style" class="category-pill">
+                <span class="cat-icon">&#128085;</span> Fashion
+            </button>
+            <button type="button" class="category-pill fk-plus-pill">
+                <span class="cat-icon">&#11088;</span> ShopEase Plus
+            </button>
+        </nav>
+    </header>
+
+    <main class="fk-main">
+        <section class="view active" id="shop" aria-labelledby="shop-title">
+            <div class="fk-banners">
+                <article class="fk-banner fk-banner-main">
+                    <p class="fk-banner-tag">Mega Sale Week</p>
+                    <h1 id="shop-title">Up to 70% Off</h1>
+                    <p>Electronics, fashion &amp; home essentials</p>
+                    <button class="fk-banner-cta" type="button" data-step-target="cart">Shop Now</button>
+                </article>
+                <article class="fk-banner fk-banner-side">
+                    <p class="fk-banner-tag">Top Deals</p>
+                    <h2>From &#8377;699</h2>
+                    <p>Home &amp; kitchen picks</p>
+                </article>
+                <article class="fk-banner fk-banner-side fk-banner-yellow">
+                    <p class="fk-banner-tag">Bank Offer</p>
+                    <h2>10% Instant Off</h2>
+                    <p>On UPI &amp; card payments</p>
+                </article>
+            </div>
+
+            <div class="fk-category-tiles" aria-label="Browse categories">
+                <button type="button" class="fk-tile" data-category="Tech">
+                    <span>&#128241;</span>
+                    <strong>Electronics</strong>
+                </button>
+                <button type="button" class="fk-tile" data-category="Style">
+                    <span>&#128085;</span>
+                    <strong>Fashion</strong>
+                </button>
+                <button type="button" class="fk-tile" data-category="Home">
+                    <span>&#127968;</span>
+                    <strong>Home</strong>
+                </button>
+                <button type="button" class="fk-tile" data-category="all">
+                    <span>&#127873;</span>
+                    <strong>Offers</strong>
+                </button>
+            </div>
+
+            <div class="fk-section-head">
+                <h2>Deals of the Day</h2>
+                <div class="fk-filters">
+                    <select id="category-filter" class="fk-select" aria-label="Filter by category">
+                        <option value="all">All categories</option>
+                        <option value="Tech">Electronics</option>
+                        <option value="Home">Home &amp; Furniture</option>
+                        <option value="Style">Fashion</option>
+                    </select>
+                    <select id="sort-filter" class="fk-select" aria-label="Sort products">
+                        <option value="featured">Popularity</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="product-grid" id="product-grid"></div>
+            <p class="empty-message product-empty" id="empty-products" hidden>No products found. Try another search.</p>
+        </section>
+
+        <section class="view" id="cart" aria-labelledby="cart-title">
+            <div class="fk-page-head">
+                <h2 id="cart-title">My Cart <span class="fk-sub" id="cart-item-label">(0 items)</span></h2>
+                <button class="fk-link-btn" type="button" data-step-target="shop">Continue Shopping</button>
+            </div>
+
+            <div class="checkout-layout">
+                <div class="panel fk-cart-panel">
+                    <div class="cart-list" id="cart-list"></div>
+                    <div class="empty-state" id="empty-cart-wrapper">
+                        <div class="fk-empty-cart">
+                            <span class="fk-empty-icon">&#128722;</span>
+                            <p class="empty-message" id="empty-cart">Your cart is empty. Add items to get started.</p>
+                            <button class="primary-action" type="button" data-step-target="shop">Shop Now</button>
+                        </div>
+                    </div>
+                </div>
+                <aside class="summary fk-price-details" aria-label="Price details">
+                    <h3>PRICE DETAILS</h3>
+                    <div class="summary-row">
+                        <span>Price (<span id="cart-qty-label">0</span> items)</span>
+                        <strong id="cart-subtotal">&#8377;0.00</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Charges</span>
+                        <strong id="cart-delivery">&#8377;0.00</strong>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount</span>
+                        <strong id="cart-total">&#8377;0.00</strong>
+                    </div>
+                    <p class="delivery-note" id="delivery-note"></p>
+                    <p class="checkout-readiness" id="checkout-readiness">Add at least one item to place order.</p>
+                    <button class="primary-action full fk-place-order" type="button" id="checkout-button">PLACE ORDER</button>
+                    <p class="fk-secure-note">&#128274; Safe and Secure Payments. Easy returns.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="view" id="checkout" aria-labelledby="checkout-title">
+            <div class="fk-page-head">
+                <h2 id="checkout-title">Delivery Address</h2>
+            </div>
+
+            <form class="checkout-layout" id="checkout-form">
+                <div class="panel form-grid">
+                    <label>
+                        Full name
+                        <input type="text" id="customer-name" placeholder="Aarav Sharma" autocomplete="name" required>
+                    </label>
+                    <label>
+                        Email
+                        <input type="email" id="customer-email" placeholder="aarav@example.com" autocomplete="email" required>
+                    </label>
+                    <label>
+                        Mobile number
+                        <input type="tel" id="customer-phone" placeholder="9876543210" autocomplete="tel" pattern="[0-9 ]{10,14}" required>
+                    </label>
+                    <label>
+                        Address (Area and Street)
+                        <textarea id="customer-address" rows="3" placeholder="House No, Building, Street, Area" autocomplete="street-address" required></textarea>
+                    </label>
+                    <div class="two-columns">
+                        <label>
+                            City / District
+                            <input type="text" id="customer-city" placeholder="Bengaluru" required>
+                        </label>
+                        <label>
+                            Pincode
+                            <input type="text" id="customer-pin" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="560001" required>
+                        </label>
+                    </div>
+                    <label>
+                        Delivery speed
+                        <select id="delivery-speed">
+                            <option value="standard">Standard delivery (Free above &#8377;2,000)</option>
+                            <option value="express">Express delivery (+&#8377;149)</option>
+                        </select>
+                    </label>
+                </div>
+
+                <aside class="summary fk-price-details" aria-label="Checkout summary">
+                    <h3>ORDER SUMMARY</h3>
+                    <div id="checkout-mini-list" class="mini-list"></div>
+                    <div class="summary-row total">
+                        <span>Amount Payable</span>
+                        <strong id="checkout-total">&#8377;0.00</strong>
+                    </div>
+                    <button class="primary-action full fk-place-order" type="submit">CONTINUE</button>
+                    <button class="text-action" type="button" data-step-target="cart">Back to cart</button>
+                </aside>
+            </form>
+        </section>
+
+        <section class="view" id="payment" aria-labelledby="payment-title">
+            <div class="fk-page-head">
+                <h2 id="payment-title">Payment Options</h2>
+            </div>
+
+            <div class="checkout-layout">
+                <div class="panel payment-methods">
+                    <p class="fk-payment-head">Recommended</p>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="upi" checked>
+                        <span>
+                            <strong>UPI</strong>
+                            <small>Pay via Google Pay, PhonePe, Paytm &amp; more</small>
+                        </span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card">
+                        <span>
+                            <strong>Credit / Debit / ATM Card</strong>
+                            <small>Visa, Mastercard, RuPay supported</small>
+                        </span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cod">
+                        <span>
+                            <strong>Cash on Delivery</strong>
+                            <small>Pay when you receive the order</small>
+                        </span>
+                    </label>
+
+                    <form class="card-form" id="payment-form">
+                        <div class="upi-fields" id="upi-fields">
+                            <label>
+                                Enter UPI ID
+                                <input type="text" id="upi-id" placeholder="yourname@upi">
+                            </label>
+                        </div>
+                        <div class="card-fields hidden" id="card-fields">
+                            <label>
+                                Card number
+                                <input type="text" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" autocomplete="cc-number">
+                            </label>
+                            <div class="two-columns">
+                                <label>
+                                    Valid Thru
+                                    <input type="text" maxlength="5" placeholder="MM/YY" autocomplete="cc-exp">
+                                </label>
+                                <label>
+                                    CVV
+                                    <input type="password" maxlength="4" placeholder="CVV" autocomplete="cc-csc">
+                                </label>
+                            </div>
+                        </div>
+                        <button class="primary-action full fk-place-order" type="submit">PAY &amp; PLACE ORDER</button>
+                    </form>
+                </div>
+
+                <aside class="summary success-card fk-price-details" aria-live="polite">
+                    <h3>Order Summary</h3>
+                    <p id="payment-customer">Complete payment to place your order.</p>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <strong id="payment-total">&#8377;0.00</strong>
+                    </div>
+                    <div class="order-box" id="order-box" hidden>
+                        <span>Order Placed</span>
+                        <strong id="order-id"></strong>
+                    </div>
+                    <p class="success-message" id="success-message"></p>
+                    <button class="secondary-action full hidden" type="button" id="new-order-button">Continue Shopping</button>
+                </aside>
+            </div>
+        </section>
+
+        <section class="view" id="history" aria-labelledby="history-title">
+            <div class="fk-page-head">
+                <h2 id="history-title">My Orders</h2>
+                <button class="fk-link-btn" type="button" data-step-target="shop">Shop More</button>
+            </div>
+
+            <div class="panel history-panel">
+                <div class="history-list" id="history-list"></div>
+                <div class="fk-empty-cart" id="empty-history-wrap">
+                    <span class="fk-empty-icon">📦</span>
+                    <p class="empty-message" id="empty-history">No orders yet. Your orders will appear here.</p>
+                    <button class="primary-action" type="button" data-step-target="shop">Start Shopping</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="view" id="wishlist" aria-labelledby="wishlist-title">
+            <div class="fk-page-head">
+                <h2 id="wishlist-title">My Wishlist</h2>
+                <button class="fk-link-btn" type="button" data-step-target="shop">Continue Shopping</button>
+            </div>
+
+            <div class="panel">
+                <div class="product-grid" id="wishlist-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;"></div>
+                <div class="fk-empty-cart" id="empty-wishlist" style="display: none;">
+                    <span class="fk-empty-icon">❤️</span>
+                    <p class="empty-message">Your wishlist is empty. Add items to save them for later!</p>
+                    <button class="primary-action" type="button" data-step-target="shop">Start Shopping</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="view auth-view" id="signin" aria-labelledby="signin-title">
+            <div class="auth-shell">
+                <aside class="auth-hero" aria-hidden="true">
+                    <span class="auth-kicker">ShopEase Plus</span>
+                    <h2>Welcome back to faster shopping.</h2>
+                    <p>Track orders, save wishlist picks, and check out with your saved account details.</p>
+                    <div class="auth-perks">
+                        <span>Fast checkout</span>
+                        <span>Wishlist sync</span>
+                        <span>Order history</span>
+                    </div>
+                </aside>
+
+                <div class="auth-card">
+                    <button class="auth-back" type="button" data-step-target="shop">Back to store</button>
+                    <p class="auth-eyebrow">Sign in</p>
+                    <h2 id="signin-title" class="auth-title">Access your account</h2>
+                    <p class="auth-copy">Use your registered email and password to continue shopping.</p>
+                    <p class="auth-message" id="signin-message" role="status" aria-live="polite"></p>
+
+                    <form id="signin-form" class="auth-form">
+                        <label>
+                            Email address
+                            <input type="email" id="signin-email" placeholder="you@example.com" autocomplete="email" required>
+                        </label>
+                        <label>
+                            Password
+                            <input type="password" id="signin-password" placeholder="Enter password" autocomplete="current-password" required>
+                        </label>
+                        <button type="submit" class="auth-button">Sign in</button>
+                    </form>
+
+                    <p class="auth-footer">New here? <button type="button" class="auth-link" data-step-target="signup">Create an account</button></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="view auth-view" id="signup" aria-labelledby="signup-title">
+            <div class="auth-shell">
+                <aside class="auth-hero auth-hero-warm" aria-hidden="true">
+                    <span class="auth-kicker">Start shopping smarter</span>
+                    <h2>Create your ShopEase account.</h2>
+                    <p>Save favorites, place orders, and keep your delivery details ready for the next deal.</p>
+                    <div class="auth-perks">
+                        <span>Secure profile</span>
+                        <span>Exclusive offers</span>
+                        <span>Simple returns</span>
+                    </div>
+                </aside>
+
+                <div class="auth-card">
+                    <button class="auth-back" type="button" data-step-target="shop">Back to store</button>
+                    <p class="auth-eyebrow">Sign up</p>
+                    <h2 id="signup-title" class="auth-title">Create your account</h2>
+                    <p class="auth-copy">It only takes a minute to set up your shopping profile.</p>
+                    <p class="auth-message" id="signup-message" role="status" aria-live="polite"></p>
+
+                    <form id="signup-form" class="auth-form">
+                        <label>
+                            Full name
+                            <input type="text" id="signup-name" placeholder="Aarav Sharma" autocomplete="name" required>
+                        </label>
+                        <label>
+                            Email address
+                            <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email" required>
+                        </label>
+                        <label>
+                            Password
+                            <input type="password" id="signup-password" placeholder="Minimum 6 characters" autocomplete="new-password" minlength="6" required>
+                        </label>
+                        <label>
+                            Confirm password
+                            <input type="password" id="signup-confirm" placeholder="Re-enter password" autocomplete="new-password" minlength="6" required>
+                        </label>
+                        <button type="submit" class="auth-button">Create account</button>
+                    </form>
+
+                    <p class="auth-footer">Already registered? <button type="button" class="auth-link" data-step-target="signin">Sign in</button></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="fk-footer">
+        <div class="fk-footer-grid">
+            <div>
+                <h4>About</h4>
+                <a href="#">Contact Us</a>
+                <a href="#">About ShopEase</a>
+                <a href="#">Careers</a>
+            </div>
+            <div>
+                <h4>Help</h4>
+                <a href="#">Payments</a>
+                <a href="#">Shipping</a>
+                <a href="#">Returns</a>
+            </div>
+            <div>
+                <h4>Policy</h4>
+                <a href="#">Return Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div>
+                <h4>Social</h4>
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+        <p class="fk-footer-copy">&copy; 2026 ShopEase Demo. Built for learning as an original marketplace app.</p>
+    </footer>
+
+    <nav class="fk-bottom-nav" aria-label="Mobile navigation">
+        <button class="nav-item active" type="button" data-step-target="shop">
+            <span>&#127968;</span>
+            <small>Home</small>
+        </button>
+        <button type="button" id="mobile-login-btn" data-step-target="signin">
+            <span>&#128100;</span>
+            <small>Account</small>
+        </button>
+        <button class="nav-item" type="button" data-step-target="cart">
+            <span>&#128722;</span>
+            <small>Cart</small>
+        </button>
+        <button class="nav-item" type="button" data-step-target="history">
+            <span>&#128230;</span>
+            <small>Orders</small>
+        </button>
+    </nav>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

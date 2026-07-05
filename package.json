@@ -1,0 +1,21 @@
+{
+  "name": "shopease-app",
+  "version": "2.0.0",
+  "description": "Full-featured e-commerce platform with authentication, payments, and admin dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "sqlite3": "^5.1.6",
+    "stripe": "^12.0.0",
+    "uuid": "^9.0.0"
+  }
+}

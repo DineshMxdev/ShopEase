@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Database
+shop.db
+*.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+!uploads/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Build
+dist/
+build/
